@@ -16,7 +16,7 @@ struct node {
  */
 class tree {
 	public:
-		int height(node* );
+		int getHeight(node* );
 		int diff(node* );
 		node* rr_rotation(node* );
 		node* ll_rotation(node* );
@@ -92,22 +92,22 @@ int main(){
 	return 0;
 }
 
-int tree::height(node *temp){
+int tree::getHeight(node *temp){
 	int h = 0;
 	if (temp){
-		int l_height = height(temp->left);
-		int r_height = height(temp->right);
-		int max_height = max(l_height, r_height);
-		h = max_height + 1;
+		int l_getHeight = getHeight(temp->left);
+		int r_getHeight = getHeight(temp->right);
+		int max_getHeight = max(l_getHeight, r_getHeight);
+		h = max_getHeight + 1;
 	}
 
 	return h;
 }
 
 int tree::diff(node* temp){
-	int l_height = height(temp->left);
-	int r_height = height(temp->right);
-	int b_factor = (l_height - r_height);
+	int l_getHeight = getHeight(temp->left);
+	int r_getHeight = getHeight(temp->right);
+	int b_factor = (l_getHeight - r_getHeight);
 	return b_factor;
 }
 
