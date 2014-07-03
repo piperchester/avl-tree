@@ -12,7 +12,7 @@ struct node {
 } *root;
 
 /**
- * This is the tree class.
+ * Contains public methods for AVL tree manipulation. 
  */
 class tree {
 	public:
@@ -33,65 +33,6 @@ class tree {
 			root = NULL;
 		}
 };
-
-int main(){
-	int choice, item;
-	tree avl;
-	while(1){
-		cout << "Enter your choice: " << endl;
-		cout << "1: Insert a value" << endl;
-		cout << "2: Display balanced AVL tree" << endl;
-		cout << "3: Print inorder traversal" << endl;
-		cout << "4: Print preorder traversal" << endl;
-		cout << "5: Print postorder traversal" << endl;
-		cout << "6: Exit" << endl;
-		cin >> choice;
-		switch(choice){
-			case 1:
-				cout << "Enter value to be inserted: ";
-				cin >> item;
-				root = avl.insert(root, item);
-				break;
-			case 2:
-				if (root == NULL){
-					cout << "Tree is empty!" << endl;
-					continue;
-				}
-
-				cout << "Balanced AVL Tree:" <<endl;
-				avl.display(root, 1);
-				break;
-
-			case 3:
-				cout << "Inorder:" << endl;
-				avl.inorder(root);
-				cout << endl;
-				break;
-	
-			case 4:
-				cout << "Preorder: " << endl;
-				avl.preorder(root);
-				cout << endl;
-				break;
-
-			case 5:
-				cout << "Postorder: " << endl;
-				avl.inorder(root);
-				cout << endl;	
-				break;
-		
-			case 6: 
-				exit(1);
-				break;
-		
-			default:
-				cout << "Wrong choice" << endl;
-		}
-	}
-
-	return 0;
-}
-
 int tree::getHeight(node *temp){
 	int h = 0;
 	if (temp){
@@ -220,3 +161,67 @@ void tree::postorder(node* tree){
 	postorder(tree->left);
 	postorder(tree->right);
 }
+
+/**
+ * Drives the program. Prompts user for input selection
+ * using stdin.
+ */
+int main(){
+	int choice, item;
+	tree avl;
+	while(1){
+		cout << "Enter your choice: " << endl;
+		cout << "1: Insert a value" << endl;
+		cout << "2: Display balanced AVL tree" << endl;
+		cout << "3: Print inorder traversal" << endl;
+		cout << "4: Print preorder traversal" << endl;
+		cout << "5: Print postorder traversal" << endl;
+		cout << "6: Exit" << endl;
+		cin >> choice;
+		switch(choice){
+			case 1:
+				cout << "Enter value to be inserted: ";
+				cin >> item;
+				root = avl.insert(root, item);
+				break;
+			case 2:
+				if (root == NULL){
+					cout << "Tree is empty!" << endl;
+					continue;
+				}
+
+				cout << "Balanced AVL Tree:" <<endl;
+				avl.display(root, 1);
+				break;
+
+			case 3:
+				cout << "Inorder:" << endl;
+				avl.inorder(root);
+				cout << endl;
+				break;
+	
+			case 4:
+				cout << "Preorder: " << endl;
+				avl.preorder(root);
+				cout << endl;
+				break;
+
+			case 5:
+				cout << "Postorder: " << endl;
+				avl.inorder(root);
+				cout << endl;	
+				break;
+		
+			case 6: 
+				exit(1);
+				break;
+		
+			default:
+				cout << "Wrong choice" << endl;
+		}
+	}
+
+	return 0;
+}
+
+
