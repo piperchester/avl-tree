@@ -1,9 +1,4 @@
 #include <iostream>
-#include <cstdio>
-#include <sstream>
-#include <algorithm>
-
-#define pow(n) (1 << (n))
 
 using namespace std;
 
