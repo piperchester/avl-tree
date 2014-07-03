@@ -43,11 +43,17 @@ int main(){
 	int choice, item;
 	tree avl;
 	while(1){
-		cout << "Enter your choice: ";
+		cout << "Enter your choice: " << endl;
+		cout << "1: Insert a value" << endl;
+		cout << "2: Display balanced AVL tree" << endl;
+		cout << "3: Print inorder traversal" << endl;
+		cout << "4: Print preorder traversal" << endl;
+		cout << "5: Print postorder traversal" << endl;
+		cout << "6: Exit" << endl;
 		cin >> choice;
 		switch(choice){
 			case 1:
-				count << "Enter value to be inserted: ";
+				cout << "Enter value to be inserted: ";
 				cin >> item;
 				root = avl.insert(root, item);
 				break;
@@ -68,7 +74,7 @@ int main(){
 				break;
 	
 			case 4:
-				count << "Preorder: " << endl;
+				cout << "Preorder: " << endl;
 				avl.preorder(root);
 				cout << endl;
 				break;
@@ -95,7 +101,7 @@ int tree::height(node *temp){
 	int h = 0;
 	if (temp){
 		int l_height = height(temp->left);
-		int r_height = height(temp-right);
+		int r_height = height(temp->right);
 		int max_height = max(l_height, r_height);
 		h = max_height + 1;
 	}
@@ -105,8 +111,8 @@ int tree::height(node *temp){
 
 int tree::diff(node* temp){
 	int l_height = height(temp->left);
-	int r_hegiht = height(temp->right);
-	int b_factor = l_height - r_height;
+	int r_height = height(temp->right);
+	int b_factor = (l_height - r_height);
 	return b_factor;
 }
 
@@ -132,13 +138,13 @@ node* tree::lr_rotation(node* parent){
 	return ll_rotation(parent);
 }
 
-node* tree:rl_rotation(node* parent){
+node* tree::rl_rotation(node* parent){
 	node* temp = parent->right;
 	parent->right = ll_rotation(temp);
 	return rr_rotation(parent);
 }
 
-node* tree:balance(node* temp){
+node* tree::balance(node* temp){
 	int balanceFactor = diff(temp);
 	
 	if (balanceFactor > 1){
@@ -148,7 +154,7 @@ node* tree:balance(node* temp){
 			temp = lr_rotation(temp);
 		}
 	} else if (balanceFactor < -1) {
-		if (diff (temp->right > 0)){
+		if (diff(temp->right) > 0){
 			temp = rl_rotation(temp);		
 		} else {
 			temp = rr_rotation(temp);
@@ -184,7 +190,7 @@ void tree::display(node* ptr, int level){
 		if (ptr == root){
 			cout<<"Root -> ";
 			for (i = 0; i < level && ptr != root; i++){
-				count << "           ";
+				cout << "           ";
 			}
 			cout << ptr->data;
 			display(ptr->left, level+1);
@@ -211,7 +217,7 @@ void tree::preorder(node* tree){
 	preorder(tree->right);
 }
 
-void tree:postorder(node* tree){
+void tree::postorder(node* tree){
 	if (!tree){
 		return;
 	}
