@@ -33,6 +33,8 @@ class tree {
 			root = NULL;
 		}
 };
+
+
 int tree::getHeight(node *temp){
 	int h = 0;
 	if (temp){
@@ -160,6 +162,7 @@ void tree::postorder(node* tree){
 
 	postorder(tree->left);
 	postorder(tree->right);
+	cout<<tree->data<<"  ";
 }
 
 /**
@@ -168,7 +171,9 @@ void tree::postorder(node* tree){
  */
 int main(){
 	int choice, item;
+
 	tree avl;
+
 	while(1){
 		cout << "Enter your choice: " << endl;
 		cout << "1: Insert a value" << endl;
@@ -223,5 +228,3 @@ int main(){
 
 	return 0;
 }
-
-
