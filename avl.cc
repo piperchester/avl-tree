@@ -1,220 +1,210 @@
-#include <iostream>
+#include <iostream> // std::cout
+#include <algorithm> // std::max
 
-using namespace std;
-
-/**
- * Node represenation of each tree leaf.
- */
-struct node {
+struct Node {
 	int data;
-	struct node* left;
-	struct node* right;
-} *root;
+	Node* left;
+	Node* right;
+};
 
-/**
- * Contains public methods for AVL tree manipulation. 
- */
-class tree {
+class Tree {
 	public:
-		int getHeight(node* );
-		int diff(node* );
-		node* rr_rotation(node* );
-		node* ll_rotation(node* );
-		node* lr_rotation(node* );
-		node* rl_rotation(node* );
-		node* balance(node* );
-		node* insert(node*, int);
-		void display(node*, int);
-		void inorder(node* );
-		void preorder(node* );
-		void postorder(node* );
-		
-		tree(){
-			root = NULL;
-		}
+		Tree() : root_(nullptr) { }
+
+		int GetHeight(Node* root);
+		int Diff(Node* root);
+		Node* RightRight_Rotation(Node* root);
+		Node* LeftLeft_Rotation(Node* root);
+		Node* LeftRight_Rotation(Node* root);
+		Node* RightLeft_Rotation(Node* root);
+		Node* Balance(Node* root);
+		Node* Insert(Node* root, int value);
+		void Display(Node* root, int level);
+		void Inorder(Node* root);
+		void Preorder(Node* root);
+		void Postorder(Node* root);
+
+		Node* root() { return this->root_; }
+
+ private:
+ 	Node* root_;
 };
 
 
-int tree::getHeight(node *temp){
+int Tree::GetHeight(Node *temp){
 	int h = 0;
 	if (temp){
-		int l_getHeight = getHeight(temp->left);
-		int r_getHeight = getHeight(temp->right);
-		int max_getHeight = max(l_getHeight, r_getHeight);
-		h = max_getHeight + 1;
+		int l_GetHeight = GetHeight(temp->left);
+		int r_GetHeight = GetHeight(temp->right);
+		int max_GetHeight = std::max(l_GetHeight, r_GetHeight);
+		h = max_GetHeight + 1;
 	}
 
 	return h;
 }
 
-int tree::diff(node* temp){
-	int l_getHeight = getHeight(temp->left);
-	int r_getHeight = getHeight(temp->right);
-	int b_factor = (l_getHeight - r_getHeight);
+
+int Tree::Diff(Node* temp){
+	int l_GetHeight = GetHeight(temp->left);
+	int r_GetHeight = GetHeight(temp->right);
+	int b_factor = (l_GetHeight - r_GetHeight);
 	return b_factor;
 }
 
-node* tree::rr_rotation(node* parent){
-	node* temp;
+Node* Tree::RightRight_Rotation(Node* parent){
+	Node* temp;
 	temp = parent->right;
 	parent->right = temp->left;
 	temp->left = parent;
 	return temp;
 }
 
-node* tree::ll_rotation(node* parent){
-	node* temp;
+Node* Tree::LeftLeft_Rotation(Node* parent){
+	Node* temp;
 	temp = parent->left;
 	parent->left = temp->right;
 	temp->right = parent;
 	return temp;
 }
 
-node* tree::lr_rotation(node* parent){
-	node* temp = parent->left;
-	parent->left = rr_rotation(temp);
-	return ll_rotation(parent);
+Node* Tree::LeftRight_Rotation(Node* parent){
+	Node* temp = parent->left;
+	parent->left = RightRight_Rotation(temp);
+	return LeftLeft_Rotation(parent);
 }
 
-node* tree::rl_rotation(node* parent){
-	node* temp = parent->right;
-	parent->right = ll_rotation(temp);
-	return rr_rotation(parent);
+Node* Tree::RightLeft_Rotation(Node* parent){
+	Node* temp = parent->right;
+	parent->right = LeftLeft_Rotation(temp);
+	return RightRight_Rotation(parent);
 }
 
-node* tree::balance(node* temp){
-	int balanceFactor = diff(temp);
+Node* Tree::Balance(Node* temp){
+	int balanceFactor = Diff(temp);
 	
 	if (balanceFactor > 1){
-		if (diff (temp->left) > 0){
-			temp = ll_rotation(temp);
+		if (Diff (temp->left) > 0){
+			temp = LeftLeft_Rotation(temp);
 		} else {
-			temp = lr_rotation(temp);
+			temp = LeftRight_Rotation(temp);
 		}
 	} else if (balanceFactor < -1) {
-		if (diff(temp->right) > 0){
-			temp = rl_rotation(temp);		
+		if (Diff(temp->right) > 0){
+			temp = RightLeft_Rotation(temp);		
 		} else {
-			temp = rr_rotation(temp);
+			temp = RightRight_Rotation(temp);
 		}
 	}
 
 	return temp;
 }
 
-node* tree::insert(node* root, int value){
+Node* Tree::Insert(Node* root, int value){
 	if (!root){
-		root = new node;
+		root = new Node;
 		root->data = value;
 		root->left = NULL;
 		root->right = NULL;
 		return root;
 	} else if (value < root->data){
-		root->left = insert(root->left, value);
-		root = balance(root);
+		root->left = Insert(root->left, value);
+		root = Balance(root);
 	} else if (value >= root->data){
-		root->right = insert(root->right, value);
-		root = balance(root);
+		root->right = Insert(root->right, value);
+		root = Balance(root);
 	}
 
 	return root;
 }
 
-void tree::display(node* ptr, int level){
-	int i;
-	if (ptr){
-		display(ptr->right, level + 1);
-		printf("\n");
-		if (ptr == root){
-			cout<<"Root -> ";
-			for (i = 0; i < level && ptr != root; i++){
-				cout << "           ";
-			}
-			cout << ptr->data;
-			display(ptr->left, level+1);
+void Tree::Display(Node* current, int level){
+	if (!current) return;
+
+	Display(current->right, level + 1);
+	std::cout << std::endl;
+	if (current == root()){
+		std::cout<<"Root -> ";
+		for (int i = 0; i < level && current != root(); ++i){
+			std::cout << "           ";
 		}
+		std::cout << current->data;
+		Display(current->left, level+1);
 	}
 }
 
-void tree::inorder(node* tree){
-	if (!tree){
+void Tree::Inorder(Node* root){
+	if (!root){
 		return;
 	}
 	
-	inorder(tree->left);
-	cout << tree->data<< "      ";
-	inorder(tree->right);
+	Inorder(root->left);
+	std::cout << root->data<< "      ";
+	Inorder(root->right);
 }
 
-void tree::preorder(node* tree){
-	if (!tree){
-		return;
-	}
-	cout<<tree->data<<"  ";
-	preorder(tree->left);
-	preorder(tree->right);
+void Tree::Preorder(Node* root){
+	if (!root) return;
+
+	std::cout << root->data << "  ";
+	Preorder(root->left);
+	Preorder(root->right);
 }
 
-void tree::postorder(node* tree){
-	if (!tree){
-		return;
-	}
+void Tree::Postorder(Node* root){
+	if (!root) return;
 
-	postorder(tree->left);
-	postorder(tree->right);
-	cout<<tree->data<<"  ";
+	Postorder(root->left);
+	Postorder(root->right);
+	std::cout<<root->data<<"  ";
 }
 
 /**
- * Drives the program. Prompts user for input selection
- * using stdin.
+ * Prompts user for input selection using stdin.
  */
 int main(){
-	int choice, item;
-
-	tree avl;
+	int choice = 0, item = 0;
+	Tree avl;
 
 	while(1){
-		cout << "Enter your choice: " << endl;
-		cout << "1: Insert a value" << endl;
-		cout << "2: Display balanced AVL tree" << endl;
-		cout << "3: Print inorder traversal" << endl;
-		cout << "4: Print preorder traversal" << endl;
-		cout << "5: Print postorder traversal" << endl;
-		cout << "6: Exit" << endl;
-		cin >> choice;
+		std::cout << "Enter your choice: " << std::endl;
+		std::cout << "1: Insert a value" << std::endl;
+		std::cout << "2: Display balanced AVL Tree" << std::endl;
+		std::cout << "3: Print Inorder traversal" << std::endl;
+		std::cout << "4: Print Preorder traversal" << std::endl;
+		std::cout << "5: Print Postorder traversal" << std::endl;
+		std::cout << "6: Exit" << std::endl;
+		std::cin >> choice;
 		switch(choice){
 			case 1:
-				cout << "Enter value to be inserted: ";
-				cin >> item;
-				root = avl.insert(root, item);
+				std::cout << "Enter value to be Inserted: ";
+				std::cin >> item;
+				avl.Insert(avl.root(), item);
 				break;
 			case 2:
-				if (root == NULL){
-					cout << "Tree is empty!" << endl;
+				if (!avl.root()){
+					std::cout << "Tree is empty!" << std::endl;
 					continue;
 				}
-
-				cout << "Balanced AVL Tree:" <<endl;
-				avl.display(root, 1);
+				std::cout << "Balanced AVL Tree:" <<std::endl;
+				avl.Display(avl.root(), 1);
 				break;
 
 			case 3:
-				cout << "Inorder:" << endl;
-				avl.inorder(root);
-				cout << endl;
+				std::cout << "Inorder:" << std::endl;
+				avl.Inorder(avl.root());
+				std::cout << std::endl;
 				break;
 	
 			case 4:
-				cout << "Preorder: " << endl;
-				avl.preorder(root);
-				cout << endl;
+				std::cout << "Preorder: " << std::endl;
+				avl.Preorder(avl.root());
+				std::cout << std::endl;
 				break;
 
 			case 5:
-				cout << "Postorder: " << endl;
-				avl.inorder(root);
-				cout << endl;	
+				std::cout << "Postorder: " << std::endl;
+				avl.Inorder(avl.root());
+				std::cout << std::endl;	
 				break;
 		
 			case 6: 
@@ -222,7 +212,7 @@ int main(){
 				break;
 		
 			default:
-				cout << "Wrong choice" << endl;
+				std::cout << "Wrong choice" << std::endl;
 		}
 	}
 
