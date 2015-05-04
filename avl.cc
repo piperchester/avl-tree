@@ -1,4 +1,4 @@
-#include <iostream> // std::cout
+#include <iostream> 
 #include <algorithm> // std::max
 
 struct Node {
