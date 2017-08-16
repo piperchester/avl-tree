@@ -11,15 +11,22 @@ class Tree {
 public:
   Tree() : root_(nullptr) { }
 
+  // Getters
   int GetHeight(Node* root);
   int Diff(Node* root);
+
+  // Rotations
   Node* RightRight_Rotation(Node* root);
   Node* LeftLeft_Rotation(Node* root);
   Node* LeftRight_Rotation(Node* root);
   Node* RightLeft_Rotation(Node* root);
+
+  // Core
   Node* Balance(Node* root);
   Node* Insert(Node* root, int value);
   void Display(Node* root, int level);
+
+  // Searches
   void Inorder(Node* root);
   void Preorder(Node* root);
   void Postorder(Node* root);
@@ -42,7 +49,6 @@ int Tree::GetHeight(Node *temp) {
 
   return h;
 }
-
 
 int Tree::Diff(Node* temp) {
   int l_GetHeight = GetHeight(temp->left);
@@ -132,6 +138,7 @@ void Tree::Display(Node* current, int level) {
   }
 }
 
+// Left - Node - Right
 void Tree::Inorder(Node* root) {
   if (!root) return;
   
@@ -140,6 +147,7 @@ void Tree::Inorder(Node* root) {
   Inorder(root->right);
 }
 
+// Node - Left - Right
 void Tree::Preorder(Node* root) {
   if (!root) return;
 
@@ -148,6 +156,7 @@ void Tree::Preorder(Node* root) {
   Preorder(root->right);
 }
 
+// Left - Right - Node
 void Tree::Postorder(Node* root) {
   if (!root) return;
 
@@ -156,14 +165,16 @@ void Tree::Postorder(Node* root) {
   std::cout<<root->data<<"  ";
 }
 
-/**
- *  * Prompts user for input selection using stdin.
- *   */
+ // Prompt for user input; and preferred traversal
  int main() {
-  int choice = 0, item = 0;
+  
+  int choice = 0;
+  int item = 0;
   Tree avl;
 
-  while(1) {
+  while (true) {
+
+    // Prompt for user input
     std::cout << "Enter your choice: " << std::endl;
     std::cout << "1: Insert a value" << std::endl;
     std::cout << "2: Display balanced AVL Tree" << std::endl;
@@ -171,7 +182,10 @@ void Tree::Postorder(Node* root) {
     std::cout << "4: Print Preorder traversal" << std::endl;
     std::cout << "5: Print Postorder traversal" << std::endl;
     std::cout << "6: Exit" << std::endl;
+    
+    // Save integer choice
     std::cin >> choice;
+
     switch(choice) {
       case 1:
       std::cout << "Enter value to be Inserted: ";
@@ -210,7 +224,7 @@ void Tree::Postorder(Node* root) {
       break;
       
       default:
-      std::cout << "Wrong choice" << std::endl;
+      std::cout << "Wrong choice, please try again." << std::endl;
     }
   }
 
