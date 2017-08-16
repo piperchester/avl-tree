@@ -133,9 +133,7 @@ void Tree::Display(Node* current, int level) {
 }
 
 void Tree::Inorder(Node* root) {
-  if (!root) {
-    return;
-  }
+  if (!root) return;
   
   Inorder(root->left);
   std::cout << root->data<< "      ";
