@@ -1,4 +1,3 @@
-avl-tree
-========
+## avl-tree
 
-C++ implementation of an Adelson-Velskii and Landis' tree.
+Adelson-Velskii and Landis' tree implementations. https://visualgo.net/en/bst
